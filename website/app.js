@@ -1,10 +1,10 @@
 // Personal API Key for OpenWeatherMap API
-let baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip='
-let apiKey = '&appid=8553a2bea1cdd4c0a872125b795bd7de&mode=json&units=metric';
+const baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip='
+const apiKey = '&appid=8553a2bea1cdd4c0a872125b795bd7de&units=metric';
 
 // Create a new date instance dynamically with JS
 let date = new Date();
-let newDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+let newDate = date.getMonth()+'.'+ date.getDate()+'.'+ date.getFullYear();
 
 // Event listener to add function to existing HTML DOM element
 document.getElementById('generate').addEventListener('click', performAction);
@@ -15,13 +15,13 @@ async function performAction() {
     if (document.getElementById('zip').value.length === 0) {
         alert("You must enter a zip code");
     } else {
-        const feelings = document.getElementById('feelings').value;
+        const feel = document.getElementById('feelings').value;
         getWeather(baseURL, zipCode, apiKey)
             .then(await function (data) {
                 // Add data
                 console.log('posting data', data);
                 postWeather('/addWeather', {
-                    temp: data.main.temp, date: newDate, userResponse: feelings, cityName: data.name
+                    temp: data.main.temp, date: newDate, feel: feel, cityName: data.name
                 });
             })
             .then(function () {
@@ -66,10 +66,11 @@ const updateUI = async () => {
         console.log('getting', allData);
         document.getElementById('city').innerHTML = 'City: ' + allData.cityName;
         document.getElementById('date').innerHTML = 'Date: ' + allData.date;
-        document.getElementById('temp').innerHTML = 'temperature: ' + allData.temp + '°C';
-        document.getElementById('content').innerHTML = 'Response: ' + allData.userResponse;
+        document.getElementById('temp').innerHTML = 'temperature: ' + Math.round(allData.temp) + '°C';
+        document.getElementById('content').innerHTML = 'Feeling: ' + allData.feel;
 
     } catch (error) {
         console.log("error", error);
+        // appropriately handle the error
     }
 }

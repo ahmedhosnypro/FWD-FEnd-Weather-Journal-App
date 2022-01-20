@@ -40,7 +40,7 @@ app.post('/addWeather', addWeather);
 function addWeather(req, res) {
     projectData.temp = req.body.temp;
     projectData.date = req.body.date;
-    projectData.userResponse = req.body.userResponse;
+    projectData.feel = req.body.feel;
     projectData.cityName = req.body.cityName;
     res.send(projectData);
     console.log('posting', projectData);
